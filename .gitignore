@@ -1,0 +1,16 @@
+*.d
+*.so
+bin
+obj
+*~
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.pdf
+*.pcm
+*.root
+plotEff
+*.png
