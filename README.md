@@ -13,7 +13,7 @@ make
 
 ./plotEff
 
-#Fastjet install documentation
+## Fastjet install documentation
 
 http://fastjet.fr/quickstart.html
 
