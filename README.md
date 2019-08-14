@@ -10,3 +10,6 @@ root macro.C++
 make
 ./plotEff
 
+#Fastjet install documentation
+http://fastjet.fr/quickstart.html
+
