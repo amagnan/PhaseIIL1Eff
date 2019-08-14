@@ -139,7 +139,8 @@ int main(){//main
   bool passL1Jet35 = false;
   bool passL1Jet75 = false;
   bool passL1Jet160 = false;
-  bool passL1MET = false;
+  bool passMET100 = false;
+  bool passMET150 = false;
   bool passNN = false;
   bool passL1DoublePFJet160 = false;
   bool passL1DoublePFJet75 = false;
@@ -188,7 +189,8 @@ int main(){//main
   outtree->Branch("passL1Jet35",&passL1Jet35);
   outtree->Branch("passL1Jet75",&passL1Jet75);
   outtree->Branch("passL1Jet160",&passL1Jet160);
-  outtree->Branch("passL1MET",&passL1MET);
+  outtree->Branch("passMET100",&passMET100);
+  outtree->Branch("passMET150",&passMET150);
   outtree->Branch("passNN",&passNN);
   outtree->Branch("passL1DoublePFJet160",&passL1DoublePFJet160);
   outtree->Branch("passL1DoublePFJet75",&passL1DoublePFJet75);
@@ -296,8 +298,9 @@ int main(){//main
 
     L1Met = *met;
     
-    passL1MET = L1_PFMet(*met,100.);
-    passNN = (*NNval)>0.6;
+    passMET100 = L1_PFMet(*met,100.);
+    passMET150 = L1_PFMet(*met,150.);
+    passNN = (*NNval)>0.85;
 
     //initialise variables...
     passL1DoublePFJet160 = false;
@@ -397,7 +400,7 @@ int main(){//main
     //jet1Vec.erase(std::remove_if(jet1Vec.begin(), jet1Vec.end(),  bind(L1_jet,_1, 160.)), jet1Vec.end());
     //boost::for_each(jet1Vec, jet2Vec, boost::bind(L1_jet2, _1, _2, 160.,35.,620,n_pass2));
 
-    //std::cout << " - L1MET bit: " << passL1MET << std::endl
+    //std::cout << " - L1MET bit: " << passMET100 << std::endl
     //	      << " 2j triggerBit " << passL1DoublePFJetMassMin
     //	      << std::endl
     //	      << " 2j+met triggerBit " << passL1DoublePFJetMassMinPfMet

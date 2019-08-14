@@ -98,22 +98,24 @@ int plotTrigEff(){//main
 
   const unsigned nT = 5;
   std::string trigbit[nT] = {
-    "passL1MET==1",
+    "passMET100==1",
+    "passMET150==1",
     "passNN==1",
     //"passL1DoublePFJet160==1",
     "passL1DoublePFJet75==1",
     //"passMjj620==1",
-    "passMjj500==1"
-    ,"passMjj500==1 && passL1MET==1"
+    //"passMjj500==1",
+    "passMjj500==1 && passMET100==1"
   };
   std::string trigbitLabel[nT] = {
-    "passL1MET",
+    "passMET100",
+    "passMET150",
     "passNN",
     //"passL1DoublePFJet160",
     "passL1DoublePFJet75",
     //"passMjj620",
-    "passMjj500"
-    ,"passMjj500L1MET"
+    //"passMjj500",
+    "passMjj500L1MET"
   };
 
   int color[8] = {1,2,3,4,6,7,8,9};
@@ -136,7 +138,8 @@ int plotTrigEff(){//main
     ";MET (GeV);Events"
   };
 
-  std::string baseline = dovsL1 ? "L1JetLead_pt>50 && L1JetSublead_pt>40" : "GenMet>150 && Gen_Mjj>1000 && Gen_detajj>4 && Gen_dphijj < 2. && GenJet1_pt>70 && GenJet2_pt>40 && GenJet1_eta*GenJet2_eta<0 && TMath::Abs(GenJet1_eta) < 5. && TMath::Abs(GenJet2_eta) < 5.";
+  //std::string baseline = dovsL1 ? "L1JetLead_pt>50 && L1JetSublead_pt>40" : "Gen_Mjj>1000 && Gen_detajj>4 && Gen_dphijj < 2. && GenJet1_pt>70 && GenJet2_pt>40 && GenJet1_eta*GenJet2_eta<0 && TMath::Abs(GenJet1_eta) < 5. && TMath::Abs(GenJet2_eta) < 5.";
+  std::string baseline = dovsL1 ? "L1JetLead_pt>50 && L1JetSublead_pt>40" : "TMath::Abs(GenJet1_eta) < 5. && TMath::Abs(GenJet2_eta) < 5.";
   if (doMatching && !dovsL1) baseline += " && GenJet1_l1dR<0.4 && GenJet2_l1dR<0.4";
   //std::string baseline = "L1JetLead_pt>50 && L1JetSublead_pt>40";
   //std::string baseline = "GenJet1_pt>70 && GenJet2_pt>40 && TMath::Abs(GenJet1_eta) < 5. && TMath::Abs(GenJet2_eta) < 5.";// && nL1Jets > 1 && GenJet1_l1dR<0.4 && GenJet2_l1dR<0.4";
@@ -145,7 +148,7 @@ int plotTrigEff(){//main
   TCanvas *mycEff[nV];
   gStyle->SetOptStat(0);
 
-  TFile *outFile = TFile::Open(dovsL1? "HistosTrigEffvsL1.root" : doMatching?"HistosTrigEffMatchvsGEN.root":"HistosTrigEffNoMatchvsGEN_metcut.root","RECREATE");
+  TFile *outFile = TFile::Open(dovsL1? "HistosTrigEffvsL1.root" : doMatching?"HistosTrigEffMatchvsGEN_nosel.root":"HistosTrigEffNoMatchvsGEN_nosel.root","RECREATE");
   outFile->cd();
   
   TH1F *h1Dpass[nT][nV];
@@ -224,16 +227,16 @@ int plotTrigEff(){//main
     myc[iV]->Update();
     if (dovsL1) myc[iV]->Print(("PLOTS/TrigL1_"+varLabel[iV]+".pdf").c_str());
     else {
-      if (doMatching) myc[iV]->Print(("PLOTS/TrigMatch_"+varLabel[iV]+".pdf").c_str());
-      else myc[iV]->Print(("PLOTS/TrigNoMatch_metcut_"+varLabel[iV]+".pdf").c_str());
+      if (doMatching) myc[iV]->Print(("PLOTS/TrigMatch_"+varLabel[iV]+"_nosel.pdf").c_str());
+      else myc[iV]->Print(("PLOTS/TrigNoMatch_"+varLabel[iV]+"_nosel.pdf").c_str());
     }
     mycEff[iV]->cd();
     
     mycEff[iV]->Update();
     if (dovsL1) mycEff[iV]->Print(("PLOTS/TrigEffL1_"+varLabel[iV]+".pdf").c_str());
     else {
-      if (doMatching) mycEff[iV]->Print(("PLOTS/TrigEffMatch_"+varLabel[iV]+".pdf").c_str());
-      else mycEff[iV]->Print(("PLOTS/TrigEffNoMatch_metcut_"+varLabel[iV]+".pdf").c_str());
+      if (doMatching) mycEff[iV]->Print(("PLOTS/TrigEffMatch_"+varLabel[iV]+"_nosel.pdf").c_str());
+      else mycEff[iV]->Print(("PLOTS/TrigEffNoMatch_"+varLabel[iV]+"_nosel.pdf").c_str());
     }
     
 
